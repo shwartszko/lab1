@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/BGU/2020/S2/Network/Lab/projects/lab1/lab1_mashoo/Inc
+HeaderPath=C:/Users/User/Desktop/אוניברסיטה/שנה ב/רשתות מחשבים 1/projects/lab1/lab1/Inc
 HeaderFiles=stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=C:/BGU/2020/S2/Network/Lab/projects/lab1/lab1_mashoo/Src
+SourcePath=C:/Users/User/Desktop/אוניברסיטה/שנה ב/רשתות מחשבים 1/projects/lab1/lab1/Src
 SourceFiles=stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]
@@ -12,6 +12,6 @@ SourceFiles=..\Src\main.c;..\Src\stm32f1xx_it.c;..\Src\stm32f1xx_hal_msp.c;../Dr
 HeaderPath=..\Drivers\STM32F1xx_HAL_Driver\Inc;..\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy;..\Drivers\CMSIS\Device\ST\STM32F1xx\Include;..\Drivers\CMSIS\Include;..\Inc;
 
 [PreviousUsedKeilFiles]
-SourceFiles=..\Src\main.c;..\Src\stm32f1xx_it.c;..\Src\stm32f1xx_hal_msp.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c;../\Src/system_stm32f1xx.c;../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c;C:/BGU/2020/S2/Network/Lab/projects/lab1/lab1_mashoo//EWARM/startup_stm32f103xb.s;
+SourceFiles=..\Src\main.c;..\Src\stm32f1xx_it.c;..\Src\stm32f1xx_hal_msp.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c;../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c;../\Src/system_stm32f1xx.c;../Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c;C:/Users/User/Desktop/אוניברסיטה/שנה ב/רשתות מחשבים 1/projects/lab1/lab1//MDK-ARM/startup_stm32f103xb.s;
 HeaderPath=..\Drivers\STM32F1xx_HAL_Driver\Inc;..\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy;..\Drivers\CMSIS\Device\ST\STM32F1xx\Include;..\Drivers\CMSIS\Include;..\Inc;
 

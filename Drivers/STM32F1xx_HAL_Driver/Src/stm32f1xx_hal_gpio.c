@@ -193,7 +193,7 @@
   */
 void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
 {
-  uint32_t position; 
+  uint32_t position;
   uint32_t ioposition = 0x00U;
   uint32_t iocurrent = 0x00U;
   uint32_t temp = 0x00U;
@@ -279,7 +279,7 @@ void HAL_GPIO_Init(GPIO_TypeDef  *GPIOx, GPIO_InitTypeDef *GPIO_Init)
             /* Reset the corresponding ODR bit */
             GPIOx->BRR = ioposition;
           }
-          break; //your neck - raz hachi magil po 
+          break;
 
         /* If we are configuring the pin in INPUT analog mode */
         case GPIO_MODE_ANALOG:
