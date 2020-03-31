@@ -41,7 +41,9 @@
 #include "stm32f1xx_hal.h"
 
 /* USER CODE BEGIN Includes */
-#define OUTPUT_DATA 201
+//#define OUTPUT_DATA 201
+
+
 
 
 /* USER CODE END Includes */
@@ -51,6 +53,7 @@ TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+const uint8_t arr[] = {201, 150, 240, 222, 189};
 uint8_t phy_to_dll_rx_bus;
 uint8_t phy_to_dll_rx_bus_valid = 0;
 uint8_t dll_to_phy_tx_bus;
@@ -82,18 +85,21 @@ static void MX_NVIC_Init(void);
 
 void dll_TX()
 {
+	static int index = 0;
 	if(!phy_tx_busy && !dll_to_phy_tx_bus_valid)
 	{
 		if(delay == 0)
 		{
-				dll_to_phy_tx_bus = OUTPUT_DATA;
-				dll_to_phy_tx_bus_valid=1;
-			  delay = 100;
+			dll_to_phy_tx_bus = arr[index];
+			dll_to_phy_tx_bus_valid=1;
+		  delay = 100;
+			index++;
 		}
 		else
 		{
 			delay--;
 		}
+		index = (index==5) ? 0:index;
 	}
 	
 }
@@ -227,9 +233,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
 	//HAL_TIM_Base_Start(&htim2);
 	//HAL_TIM_Base_Start_IT(&htim2);
-	HAL_GPIO_WritePin(Tx_clock_GPIO_Port,Tx_clock_Pin, GPIO_PIN_RESET);//set clock to 1
-	tx_clock = 1;
-	phy_rx_clock = 1;
+	HAL_GPIO_WritePin(Tx_clock_GPIO_Port,Tx_clock_Pin, GPIO_PIN_RESET);//set clock to 0
+	tx_clock = 0;
+	phy_rx_clock = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
