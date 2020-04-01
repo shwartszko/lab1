@@ -90,9 +90,9 @@ void dll_TX()
 	{
 		if(delay == 0)
 		{
-			dll_to_phy_tx_bus = arr[index];
+			dll_to_phy_tx_bus = 201;
 			dll_to_phy_tx_bus_valid=1;
-		  delay = 100;
+		  delay = 10000;
 			index++;
 		}
 		else
@@ -110,6 +110,7 @@ void phy_TX()
 	static uint8_t data_to_send = 0;
 	static uint16_t mask = 1;
 	
+	//tx_clock = HAL_GPIO_ReadPin(Tx_clock_GPIO_Port,Tx_clock_Pin);
 	if(dll_to_phy_tx_bus_valid)
 	{
 		data_to_send = dll_to_phy_tx_bus;
@@ -138,10 +139,10 @@ void phy_TX()
 		HAL_TIM_Base_Stop(&htim2);
 		HAL_TIM_Base_Stop_IT(&htim2);
 		HAL_GPIO_WritePin(Tx_clock_GPIO_Port,Tx_clock_Pin, GPIO_PIN_RESET);//set clock to 0
-		tx_clock = 0;
 		phy_tx_busy = 0;
 		mask = 1;
 	}
+	//prev_tx_clock = tx_clock;
 }
 
 void phy_RX()
@@ -150,6 +151,7 @@ void phy_RX()
 	static uint8_t counter = 0;
 	static uint8_t data_input = 0;
 	
+	//phy_rx_clock = HAL_GPIO_ReadPin(Rx_clock_GPIO_Port,Rx_clock_Pin);
 	if(!phy_rx_clock && prev_rx_clock && !phy_to_dll_rx_bus_valid)
 	{
 		input = phy_rx_data_value = HAL_GPIO_ReadPin(Rx_data_GPIO_Port, Rx_data_Pin);
@@ -163,6 +165,7 @@ void phy_RX()
 		data_input = 0;
 		phy_to_dll_rx_bus = data_input;
 	}
+	//prev_rx_clock = phy_rx_clock;
 }
 
 void dll_RX()
@@ -189,8 +192,8 @@ void phy_layer()
 
 void sampleClocks()
 {
-	prev_rx_clock = phy_rx_clock;
 	prev_tx_clock = tx_clock;
+	prev_rx_clock = phy_rx_clock;
 	tx_clock = HAL_GPIO_ReadPin(Tx_clock_GPIO_Port,Tx_clock_Pin);
 	phy_rx_clock = HAL_GPIO_ReadPin(Rx_clock_GPIO_Port,Rx_clock_Pin);
 }
@@ -322,7 +325,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 19999;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 5;
+  htim2.Init.Period = 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
