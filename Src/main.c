@@ -42,8 +42,10 @@
 
 /* USER CODE BEGIN Includes */
 //#define OUTPUT_DATA 201
-
-
+#define DELAY_MAX 10000
+#define MASK_MAX 256
+#define BYTE_COUNT 8
+#define ARR_SIZE 5
 
 
 /* USER CODE END Includes */
@@ -65,9 +67,7 @@ static uint32_t tx_clock = 0;
 static uint32_t phy_rx_clock = 0;
 uint32_t prev_tx_clock = 0;
 uint32_t prev_rx_clock = 0;
-int delay = 0;
 uint8_t output_data = 0;
-uint32_t clock_cycles = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,6 +85,7 @@ static void MX_NVIC_Init(void);
 
 void dll_TX()
 {
+	static int delay = 0;
 	static int index = 0;
 	if(!phy_tx_busy && !dll_to_phy_tx_bus_valid)
 	{
@@ -92,25 +93,30 @@ void dll_TX()
 		{
 			dll_to_phy_tx_bus = arr[index];
 			dll_to_phy_tx_bus_valid=1;
-		  delay = 100;
+		  delay = DELAY_MAX;
 			index++;
 		}
 		else
 		{
 			delay--;
 		}
-		index = (index==5) ? 0:index;
+		index = (index == ARR_SIZE) ? 0:index;
 	}
 	
 }
 
+/*
+The funcion receives data from dll_tx to send, than sends it over the communication line 
+every time tx_clock is in rising edge.
+In order to send the data the function starts a clock, than stops it in the end of the transfer.
+*/
 void phy_TX()
 {
 	uint8_t masked_bit = 0;
 	static uint8_t data_to_send = 0;
 	static uint16_t mask = 1;
 	
-	if(dll_to_phy_tx_bus_valid)
+	if(dll_to_phy_tx_bus_valid)//dll tranfered new data to send
 	{
 		data_to_send = dll_to_phy_tx_bus;
 		dll_to_phy_tx_bus_valid = 0;
@@ -118,7 +124,7 @@ void phy_TX()
 		HAL_TIM_Base_Start(&htim2);
 		HAL_TIM_Base_Start_IT(&htim2);
 	}
-	else if(!prev_tx_clock && tx_clock && mask <= 256)
+	else if(!prev_tx_clock && tx_clock && mask <= MASK_MAX)//sending data
 	{
 		masked_bit = (dll_to_phy_tx_bus)&(mask);
 		if(masked_bit == mask)
@@ -133,17 +139,20 @@ void phy_TX()
 		}
 		mask *= 2;
 	}
-	else if(mask > 256)//sent the whole byte
+	else if(mask > MASK_MAX)//sent the whole byte
 	{
 		HAL_TIM_Base_Stop(&htim2);
 		HAL_TIM_Base_Stop_IT(&htim2);
 		HAL_GPIO_WritePin(Tx_clock_GPIO_Port,Tx_clock_Pin, GPIO_PIN_RESET);//set clock to 0
-		tx_clock = 0;
 		phy_tx_busy = 0;
 		mask = 1;
 	}
 }
 
+/*
+The function receives a bit from the communication line every time the rx_clock is in falling edge.
+After reeiving 8 bits the function transfers the data to the dll_rx.
+*/
 void phy_RX()
 {
 	uint8_t input = 0;
@@ -156,7 +165,7 @@ void phy_RX()
 		data_input += input << counter;//assemble the input data
 		counter++;
 	}
-	if(counter == 8)//received a byte
+	if(counter == BYTE_COUNT)//received a byte
 	{
 		phy_to_dll_rx_bus_valid = 1;
 		counter = 0;
@@ -187,10 +196,13 @@ void phy_layer()
 	phy_RX();
 }
 
+/*
+THe function samples the tx and rx clocks
+*/
 void sampleClocks()
 {
-	prev_rx_clock = phy_rx_clock;
 	prev_tx_clock = tx_clock;
+	prev_rx_clock = phy_rx_clock;
 	tx_clock = HAL_GPIO_ReadPin(Tx_clock_GPIO_Port,Tx_clock_Pin);
 	phy_rx_clock = HAL_GPIO_ReadPin(Rx_clock_GPIO_Port,Rx_clock_Pin);
 }
@@ -231,8 +243,6 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-	//HAL_TIM_Base_Start(&htim2);
-	//HAL_TIM_Base_Start_IT(&htim2);
 	HAL_GPIO_WritePin(Tx_clock_GPIO_Port,Tx_clock_Pin, GPIO_PIN_RESET);//set clock to 0
 	tx_clock = 0;
 	phy_rx_clock = 0;
@@ -322,7 +332,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 19999;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 5;
+  htim2.Init.Period = 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
